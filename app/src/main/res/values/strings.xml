@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">UAV Up Time Calculator</string>
+    <string name="dialog_title">Calculated Flight Time</string>
+    <string-array name="types">
+        <item>Quadcopter</item>
+        <item>Hexacopter</item>
+        <item>Octacopter</item>
+        <item>Tricopter</item>
+    </string-array>
+</resources>
