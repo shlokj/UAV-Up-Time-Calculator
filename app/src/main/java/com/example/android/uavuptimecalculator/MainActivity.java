@@ -1,129 +1,4 @@
 package com.example.android.uavuptimecalculator;
-/*
-import android.app.Activity;
-import java.util.ArrayList;
-import java.util.List;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-//import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Toast;
-
-public class MainActivity extends AppCompatActivity {
-    int number_of_rotors;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Spinner typeOfDrone = (Spinner) findViewById(R.id.droneType);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.types, android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-        typeOfDrone.setAdapter(adapter);
-
-      //  ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
-        //        android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.types));
-        //myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //typeOfDrone.setAdapter(myAdapter);
-        //   typeOfDrone.setSelection(1);
-
-
-        final String drone_type = typeOfDrone.getSelectedItem().toString();
-
-        if (drone_type=="Tricopter") {
-            number_of_rotors=3;
-        }
-        else if (drone_type=="Quadcopter") {
-            number_of_rotors=4;
-        }
-        else if (drone_type=="Hexacopter") {
-            number_of_rotors=6;
-        }
-        else if (drone_type=="Octacopter") {
-            number_of_rotors=8;
-        }
-        /*if (required_throttle>=1){
-            Toast.makeText(MainActivity.this,"UAV will not take off",Toast.LENGTH_SHORT);
-        }*/
-
-        //String abc = Float.toString(avg_ampdraw);
-       // Toast.makeText(MainActivity.this,abc,Toast.LENGTH_SHORT);
-        //Toast.makeText(MainActivity.this,avg_ampdraw,Toast.LENGTH_SHORT);
-
-        //public void calculateFT()
-   /*     Button CalculateFTime = (Button) findViewById(R.id.calculate_flight_time);
-        CalculateFTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText Battery_Capacity = (EditText) findViewById(R.id.batteryCapacity);
-                String stringA  = Battery_Capacity.getText().toString();
-                if (stringA==null){
-                    stringA="0";
-                }
-                EditText Amps_perMotor = (EditText) findViewById(R.id.MAPM);
-                String stringB = Amps_perMotor.getText().toString();
-                if (stringB==null){
-                    stringB="0";
-                }
-                EditText Thrust_perMotor = (EditText) findViewById(R.id.MTPM);
-                String stringC = Thrust_perMotor.getText().toString();
-                if (stringC==null){
-                    stringC="0";
-                }
-                EditText Weight_ofDrone = (EditText) findViewById(R.id.droneWeight);
-                String stringD =  Weight_ofDrone.getText().toString();
-                if (stringD==null){
-                    stringD="0";
-                }
-                //int battery_capacity_mah =Integer.parseInt(stringA!=null&&!stringA.isEmpty()?stringA:"0");
-                int battery_capacity_mah =Integer.parseInt(stringA);
-                //int battery_capacity_mah = Integer.parseInt(Battery_Capacity.toString());
-                //int total_max_ampdraw = Integer.parseInt(Amps_perMotor.toString()) * number_of_rotors;
-                int total_max_ampdraw = Integer.parseInt(stringB) * number_of_rotors;
-                //int total_thrust = Integer.parseInt(Thrust_perMotor.toString()) * number_of_rotors;
-                int total_thrust =  Integer.parseInt(stringC) * number_of_rotors;
-                //float required_throttle = Integer.parseInt(Weight_ofDrone.toString()) / total_thrust;
-                float required_throttle = Float.parseFloat(stringD) / total_thrust;
-
-                float avg_ampdraw=required_throttle*total_max_ampdraw;
-                float battery_capacity_ah=battery_capacity_mah/1000;
-                float time_in_hours=battery_capacity_ah/avg_ampdraw;
-                float time_in_minutes=time_in_hours*60;
-                float time_in_seconds=time_in_minutes*60;
-
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
-                mBuilder.setTitle("Calculated Flight Time");
-                //mBuilder.setTitle(R.string.dialog_title);
-                mBuilder.setMessage("Your UAV will fly for "+time_in_seconds+" seconds, which is equivalent to "+time_in_minutes+" minutes. Avg amp draw is "+avg_ampdraw+" battery capacity is "+battery_capacity_ah+" max ampdraw is "+total_max_ampdraw+" number of rotors is "+drone_type+number_of_rotors);
-                mBuilder.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialog = mBuilder.create();
-                alertDialog.show();
-            }
-        });
-
-
-    }
-
-
-}
-*/
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -139,10 +14,10 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     int number_of_rotors;
-
+    float thrustChangedByAngle;
     //Views as member variables so that kept in memory until activity destroys.
     EditText Battery_Capacity,Amps_perMotor,Thrust_perMotor,Weight_ofDrone;
-    Spinner typeOfDrone;
+    Spinner typeOfDrone, sizeOfDrone;
     Button CalculateFTime;
 
     @Override
@@ -154,12 +29,17 @@ public class MainActivity extends AppCompatActivity {
         Thrust_perMotor = (EditText) findViewById(R.id.MTPM);
         Weight_ofDrone = (EditText) findViewById(R.id.droneWeight);
         typeOfDrone = (Spinner) findViewById(R.id.droneType);
+        sizeOfDrone = (Spinner) findViewById(R.id.droneSize) ;
 
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.types));
         myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
+        ArrayAdapter<String> myAdapter1 = new ArrayAdapter<String>(MainActivity.this,
+                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.sizes));
+        myAdapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeOfDrone.setAdapter(myAdapter);
+        sizeOfDrone.setAdapter(myAdapter1);
         typeOfDrone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -187,8 +67,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        typeOfDrone.setSelection(1);
+        typeOfDrone.setSelection(1);
+        sizeOfDrone.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
+                String size_of_drone=sizeOfDrone.getSelectedItem().toString();
+                switch (size_of_drone){
+                    case "Racing Drone (180-270, high speed)":
+                        thrustChangedByAngle=0.7071f;
+                    break;
+                    case  "Medium Size (330-600, normal pace)":
+                        thrustChangedByAngle=0.85f;
+                        break;
+                    case "Large UAV (680+, stability type)":
+                        thrustChangedByAngle=0.95f;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         //public void calculateFT()
         CalculateFTime = (Button) findViewById(R.id.calculate_flight_time);
 
@@ -204,13 +106,19 @@ public class MainActivity extends AppCompatActivity {
 
 // Removed null checks on strings as EditText never returns null as per android docs
 //but empty checks are necessary to avoid app crash in case of parsing exception of empty string
-                int battery_capacity_mah =Integer.parseInt(!stringA.isEmpty()?stringA:"0");
-                int total_thrust =  Integer.parseInt(!stringC.isEmpty()?stringC:"0") * number_of_rotors;//no usage found, so did not confirm it
+                //float recperc = 80/100;
+                float battery_capacity_mah =Float.parseFloat(!stringA.isEmpty()?stringA:"0") * 80/100;
+                float total_thrust =  Integer.parseInt(!stringC.isEmpty()?stringC:"0") * number_of_rotors ;
                 int total_max_ampdraw = Integer.parseInt(stringB.isEmpty()||stringB.equals("0")?"1":stringB) * number_of_rotors;//Simplified
-                float kgthrust = total_thrust/1000;
+                float kgthrust = (total_thrust/1000) * thrustChangedByAngle;
                 float required_throttle = (Float.parseFloat(stringD.isEmpty()||stringD.equals("0")?"1":stringD)/1000) / kgthrust;//Simplified
-                //these two variables on RHS must not be zero, so added checks while parsing
-                //In case, Amps_perMotor or Weight_ofDrone were empty, you should validate them to not to be.
+                if (required_throttle>1){
+                    required_throttle=1;
+                }
+                else{
+                    required_throttle=required_throttle;
+                }
+
                 float avg_ampdraw=required_throttle*total_max_ampdraw;
 
                 String abc = Float.toString(avg_ampdraw);

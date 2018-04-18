@@ -12,14 +12,15 @@
         android:id="@+id/calculate_flight_time"
         android:layout_width="305dp"
         android:layout_height="82dp"
-        android:layout_marginBottom="104dp"
+        android:layout_marginBottom="112dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:text="Calculate Flight Time"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.563"
+        app:layout_constraintHorizontal_bias="0.54"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
@@ -36,7 +37,7 @@
         android:id="@+id/textView"
         android:layout_width="319dp"
         android:layout_height="51dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -44,7 +45,7 @@
         android:text="This app intends to help drone pilots compute/predict their UAV's flight time beforehand, providing a better insight into prospective builds"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintHorizontal_bias="0.547"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -52,11 +53,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
         android:text="By Shlok Jhawar"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <EditText
         android:id="@+id/batteryCapacity"
@@ -66,10 +70,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:inputType="number"
         android:hint="Battery Capacity (mAh)"
+        android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/droneType" />
+        app:layout_constraintTop_toBottomOf="@+id/droneSize" />
 
     <EditText
         android:id="@+id/MAPM"
@@ -109,6 +113,16 @@
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MTPM" />
+
+    <Spinner
+        android:id="@+id/droneSize"
+        android:layout_width="245dp"
+        android:layout_height="44dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/droneType" />
 
 
 </android.support.constraint.ConstraintLayout>

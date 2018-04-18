@@ -2,9 +2,14 @@
     <string name="app_name">UAV Up Time Calculator</string>
     <string name="dialog_title">Calculated Flight Time</string>
     <string-array name="types">
+        <item>Tricopter</item>
         <item>Quadcopter</item>
         <item>Hexacopter</item>
         <item>Octacopter</item>
-        <item>Tricopter</item>
+    </string-array>
+    <string-array name="sizes">
+        <item>Racing Drone (180-270, high speed)</item>
+        <item>Medium Size (330-600, normal pace)</item>
+        <item>Large UAV (680+, stability type)</item>
     </string-array>
 </resources>
