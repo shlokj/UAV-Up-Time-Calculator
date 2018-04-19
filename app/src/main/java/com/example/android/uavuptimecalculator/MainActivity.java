@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Values from editTexts should be collected at the time of button click event.
-                String stringA  = Battery_Capacity.getText().toString();
+                String stringA = Battery_Capacity.getText().toString();
                 String stringB = Amps_perMotor.getText().toString();
                 String stringC = Thrust_perMotor.getText().toString();
                 String stringD = Weight_ofDrone.getText().toString();
