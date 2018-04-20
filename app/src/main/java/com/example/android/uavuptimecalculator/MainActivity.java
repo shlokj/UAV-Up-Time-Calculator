@@ -2,6 +2,8 @@ package com.example.android.uavuptimecalculator;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+//import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+//import android.os.Vibrator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         Weight_ofDrone = (EditText) findViewById(R.id.droneWeight);
         typeOfDrone = (Spinner) findViewById(R.id.droneType);
         sizeOfDrone = (Spinner) findViewById(R.id.droneSize) ;
+        final Vibrator vibrator = (Vibrator) getSystemService(MainActivity.this.VIBRATOR_SERVICE);
+        //VibrationEffect effect = VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE);
 
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.types));
@@ -97,16 +102,13 @@ public class MainActivity extends AppCompatActivity {
         CalculateFTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Values from editTexts should be collected at the time of button click event.
                 String stringA = Battery_Capacity.getText().toString();
                 String stringB = Amps_perMotor.getText().toString();
                 String stringC = Thrust_perMotor.getText().toString();
                 String stringD = Weight_ofDrone.getText().toString();
+                vibrator.vibrate(40);
 
-// Removed null checks on strings as EditText never returns null as per android docs
-//but empty checks are necessary to avoid app crash in case of parsing exception of empty string
-                //float recperc = 80/100;
                 float battery_capacity_mah =Float.parseFloat(!stringA.isEmpty()?stringA:"0") * 80/100;
                 float total_thrust =  Integer.parseInt(!stringC.isEmpty()?stringC:"0") * number_of_rotors ;
                 int total_max_ampdraw = Integer.parseInt(stringB.isEmpty()||stringB.equals("0")?"1":stringB) * number_of_rotors;//Simplified
