@@ -1,4 +1,4 @@
-package com.example.android.uavuptimecalculator;
+package com.justrobotics.android.uavuptimecalculator;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                 String size_of_drone=sizeOfDrone.getSelectedItem().toString();
                 switch (size_of_drone){
                     case "Racing Drone (180-270, high speed)":
-                        thrustChangedByAngle=0.7071f;
+                        thrustChangedByAngle=0.7f;
                     break;
                     case  "Medium Size (330-600, normal pace)":
                         thrustChangedByAngle=0.85f;
@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
 
                 float avg_ampdraw=required_throttle*total_max_ampdraw;
 
-                String abc = Float.toString(avg_ampdraw);
-                Toast.makeText(MainActivity.this,abc,Toast.LENGTH_SHORT);
+           //     String abc = Float.toString(avg_ampdraw);
+          //      Toast.makeText(MainActivity.this,abc,Toast.LENGTH_SHORT);
 
                 float battery_capacity_ah=battery_capacity_mah/1000;
                 float time_in_hours=battery_capacity_ah/avg_ampdraw;

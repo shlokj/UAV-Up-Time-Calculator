@@ -1,4 +1,4 @@
-package com.example.android.uavuptimecalculator;
+package com.justrobotics.android.uavuptimecalculator;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

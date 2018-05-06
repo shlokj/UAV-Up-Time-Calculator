@@ -1,4 +1,4 @@
-package com.example.android.uavuptimecalculator;
+package com.justrobotics.android.uavuptimecalculator;
 
 import org.junit.Test;
 
