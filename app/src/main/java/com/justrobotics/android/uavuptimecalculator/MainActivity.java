@@ -5,23 +5,75 @@ import android.os.Bundle;
 //import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.widget.Toast;
 //import android.os.Vibrator;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    public void composeEmail(String message) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("*/*");
+        intent.putExtra(android.content.Intent.EXTRA_EMAIL,new String[] { "shlokj@gmail.com" });
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Would like to get in touch");
+        intent.putExtra(Intent.EXTRA_TEXT, message);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+
+    public void sendEmail () {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Send a message: ");
+        // Set up the input
+        final EditText input = new EditText(this);
+        //Editable Message = input.getText();
+        //final String message = Message.toString();
+// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                final String Message = input.getText().toString();
+                composeEmail(Message);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+
+    }
 
     int number_of_rotors;
     float thrustChangedByAngle;
     //Views as member variables so that kept in memory until activity destroys.
     EditText Battery_Capacity,Amps_perMotor,Thrust_perMotor,Weight_ofDrone;
     Spinner typeOfDrone, sizeOfDrone;
-    Button CalculateFTime;
+    Button CalculateFTime, contact;
+
+    public String displayFlightTime (int flightTimeInSeconds){
+        float flightTimeInMinutes = flightTimeInSeconds/60;
+        return "Your UAV will fly for "+flightTimeInSeconds+" seconds, which is equivalent to "+flightTimeInMinutes+" minutes.";
+        /*+ "No. of rotors is "+number_of_rotors+" Reqd throt. is "+required_throttle+" total max amps is "+total_max_ampdraw+"weight is "+stringD+" avg amp draw is "+avg_ampdraw+" total thrust is "+total_thrust*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +148,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        sizeOfDrone.setSelection(1);
         //public void calculateFT()
-        CalculateFTime = (Button) findViewById(R.id.calculate_flight_time);
 
+        CalculateFTime = (Button) findViewById(R.id.calculate_flight_time);
         CalculateFTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,10 +187,11 @@ public class MainActivity extends AppCompatActivity {
 
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Calculated Flight Time")
-                        .setMessage("Your UAV will fly for "+tis+" seconds, which is equivalent to "+time_in_minutes+" minutes." /*+ "No. of rotors is "+number_of_rotors+" Reqd throt. is "+required_throttle+" total max amps is "+total_max_ampdraw+"weight is "+stringD+" avg amp draw is "+avg_ampdraw+" total thrust is "+total_thrust*/)
-                        .setNeutralButton("OK",null)
+                        .setMessage(displayFlightTime((int)time_in_seconds))
+                        .setPositiveButton("OK",null)
                         .show();
             }
         });
     }
+
 }

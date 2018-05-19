@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">UAV Up Time Calculator</string>
     <string name="dialog_title">Calculated Flight Time</string>
+    <string name="by_shlok_jhawar">By Shlok Jhawar</string>
+    <string name="about_app">This app intends to help drone pilots compute/predict their UAV\'s flight time beforehand, providing a better insight into prospective builds</string>
     <string-array name="types">
         <item>Tricopter</item>
         <item>Quadcopter</item>

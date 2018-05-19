@@ -10,8 +10,8 @@
 
     <Button
         android:id="@+id/calculate_flight_time"
-        android:layout_width="176dp"
-        android:layout_height="165dp"
+        android:layout_width="312dp"
+        android:layout_height="77dp"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
@@ -73,7 +73,7 @@
         android:hint="Battery Capacity (mAh)"
         android:inputType="number"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/droneSize" />
+        app:layout_constraintTop_toBottomOf="@+id/droneType" />
 
     <EditText
         android:id="@+id/MAPM"
@@ -117,13 +117,16 @@
 
     <Spinner
         android:id="@+id/droneSize"
-        android:layout_width="245dp"
         android:layout_height="44dp"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/droneType" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/droneType"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
