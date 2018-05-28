@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void composeEmail(String message) {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("*/*");
+        //intent.setType("*/*");
+        intent.setType("text/HTML");
         intent.putExtra(android.content.Intent.EXTRA_EMAIL,new String[] { "shlokj@gmail.com" });
         intent.putExtra(Intent.EXTRA_SUBJECT, "Would like to get in touch");
         intent.putExtra(Intent.EXTRA_TEXT, message);
@@ -193,5 +196,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch(id){
+            case R.id.contact_us_sendemail:
+                sendEmail();
+        }
+        return true;
+    }
 }
