@@ -2,7 +2,6 @@ package com.justrobotics.android.uavuptimecalculator;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-//import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -16,9 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.widget.Toast;
-//import android.os.Vibrator;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,14 +36,9 @@ public class MainActivity extends AppCompatActivity {
     public void sendEmail () {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Send a message: ");
-        // Set up the input
         final EditText input = new EditText(this);
-        //Editable Message = input.getText();
-        //final String message = Message.toString();
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
-// Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -67,15 +59,20 @@ public class MainActivity extends AppCompatActivity {
 
     int number_of_rotors;
     float thrustChangedByAngle;
-    //Views as member variables so that kept in memory until activity destroys.
     EditText Battery_Capacity,Amps_perMotor,Thrust_perMotor,Weight_ofDrone;
     Spinner typeOfDrone, sizeOfDrone;
     Button CalculateFTime, contact;
 
-    public String displayFlightTime (int flightTimeInSeconds){
-        float flightTimeInMinutes = flightTimeInSeconds/60;
-        return "Your UAV will fly for "+flightTimeInSeconds+" seconds, which is equivalent to "+flightTimeInMinutes+" minutes.";
+    public void displayFlightTime (int flightTimeInSeconds){
+        float flightTimeInMinutes = (float)flightTimeInSeconds/(float)60;
+       // return "Your UAV will fly for "+flightTimeInSeconds+" seconds, which is equivalent to "+flightTimeInMinutes+" minutes.";
         /*+ "No. of rotors is "+number_of_rotors+" Reqd throt. is "+required_throttle+" total max amps is "+total_max_ampdraw+"weight is "+stringD+" avg amp draw is "+avg_ampdraw+" total thrust is "+total_thrust*/
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Calculated Flight Time")
+                .setMessage("Your UAV will fly for "+flightTimeInSeconds+" seconds, which is equivalent to "+flightTimeInMinutes+" minutes.")
+                .setPositiveButton("OK",null)
+                .show();
+
     }
 
     @Override
@@ -89,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         typeOfDrone = (Spinner) findViewById(R.id.droneType);
         sizeOfDrone = (Spinner) findViewById(R.id.droneSize) ;
         final Vibrator vibrator = (Vibrator) getSystemService(MainActivity.this.VIBRATOR_SERVICE);
-        //VibrationEffect effect = VibrationEffect.createOneShot(1000, VibrationEffect.DEFAULT_AMPLITUDE);
 
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this,
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.types));
@@ -152,7 +148,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         sizeOfDrone.setSelection(1);
-        //public void calculateFT()
 
         CalculateFTime = (Button) findViewById(R.id.calculate_flight_time);
         CalculateFTime.setOnClickListener(new View.OnClickListener() {
@@ -174,25 +169,15 @@ public class MainActivity extends AppCompatActivity {
                     required_throttle=1;
                 }
                 else{
-                    required_throttle=required_throttle;
                 }
 
                 float avg_ampdraw=required_throttle*total_max_ampdraw;
-
-           //     String abc = Float.toString(avg_ampdraw);
-          //      Toast.makeText(MainActivity.this,abc,Toast.LENGTH_SHORT);
-
                 float battery_capacity_ah=battery_capacity_mah/1000;
                 float time_in_hours=battery_capacity_ah/avg_ampdraw;
                 float time_in_minutes=time_in_hours*60;
                 float time_in_seconds=time_in_minutes*60;
                 int tis = (int)Math.round(time_in_seconds);
-
-                new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Calculated Flight Time")
-                        .setMessage(displayFlightTime((int)time_in_seconds))
-                        .setPositiveButton("OK",null)
-                        .show();
+                displayFlightTime(tis);
             }
         });
     }
