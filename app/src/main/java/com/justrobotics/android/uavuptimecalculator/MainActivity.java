@@ -1,6 +1,7 @@
 package com.justrobotics.android.uavuptimecalculator;
 
 import android.app.AlertDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -8,10 +9,12 @@ import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,13 +22,12 @@ import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
 
-
     public void composeEmail(String message) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         //intent.setType("*/*");
         intent.setType("text/HTML");
         intent.putExtra(android.content.Intent.EXTRA_EMAIL,new String[] { "shlokj@gmail.com" });
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Would like to get in touch");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Drone Flight Time Calculator");
         intent.putExtra(Intent.EXTRA_TEXT, message);
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
@@ -38,7 +40,14 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle("Send a message: ");
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
+        FrameLayout container = new FrameLayout(getApplicationContext());
+        FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+        params.rightMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+        input.setLayoutParams(params);
+        container.addView(input);
+        //builder.setMessage("This will direct you to send a mail to the developer");
+        builder.setView(container);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -61,18 +70,34 @@ public class MainActivity extends AppCompatActivity {
     float thrustChangedByAngle;
     EditText Battery_Capacity,Amps_perMotor,Thrust_perMotor,Weight_ofDrone;
     Spinner typeOfDrone, sizeOfDrone;
-    Button CalculateFTime, contact;
+    Button CalculateFTime;
 
     public void displayFlightTime (int flightTimeInSeconds){
         float flightTimeInMinutes = (float)flightTimeInSeconds/(float)60;
-       // return "Your UAV will fly for "+flightTimeInSeconds+" seconds, which is equivalent to "+flightTimeInMinutes+" minutes.";
-        /*+ "No. of rotors is "+number_of_rotors+" Reqd throt. is "+required_throttle+" total max amps is "+total_max_ampdraw+"weight is "+stringD+" avg amp draw is "+avg_ampdraw+" total thrust is "+total_thrust*/
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle("Calculated Flight Time")
                 .setMessage("Your UAV will fly for "+flightTimeInSeconds+" seconds, which is equivalent to "+flightTimeInMinutes+" minutes.")
                 .setPositiveButton("OK",null)
                 .show();
+    }
 
+    public void displayAboutApp () {
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("About Drone Flight Time Calculator")
+                .setMessage("This will redirect you to send an email")
+                .setMessage(R.string.about_app)
+                .setIcon(R.drawable.dftc_drawable_icon)
+                .setPositiveButton("OK",null)
+                .show();
+    }
+
+    public void openOnGooglePlay(){
+        final String appPackageName = getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
     @Override
@@ -158,7 +183,22 @@ public class MainActivity extends AppCompatActivity {
                 String stringB = Amps_perMotor.getText().toString();
                 String stringC = Thrust_perMotor.getText().toString();
                 String stringD = Weight_ofDrone.getText().toString();
-                vibrator.vibrate(40);
+
+                if (!stringA.matches("[0-9]+")){
+                    stringA="0";
+                }
+                if (!stringB.matches("[0-9]+")){
+                    stringB="0";
+                }
+                if (!stringC.matches("[0-9]+")){
+                    stringC="0";
+                }
+                if (!stringD.matches("[0-9]+")){
+                    stringD="0";
+                }
+                if (vibrator!=null){
+                    vibrator.vibrate(40);
+                }
 
                 float battery_capacity_mah =Float.parseFloat(!stringA.isEmpty()?stringA:"0") * 80/100;
                 float total_thrust =  Integer.parseInt(!stringC.isEmpty()?stringC:"0") * number_of_rotors ;
@@ -168,16 +208,16 @@ public class MainActivity extends AppCompatActivity {
                 if (required_throttle>1){
                     required_throttle=1;
                 }
-                else{
-                }
-
                 float avg_ampdraw=required_throttle*total_max_ampdraw;
                 float battery_capacity_ah=battery_capacity_mah/1000;
                 float time_in_hours=battery_capacity_ah/avg_ampdraw;
                 float time_in_minutes=time_in_hours*60;
                 float time_in_seconds=time_in_minutes*60;
                 int tis = (int)Math.round(time_in_seconds);
-                displayFlightTime(tis);
+//                displayFlightTime(tis);
+                Intent DFT = new Intent(MainActivity.this, DisplayActivity.class);
+                DFT.putExtra("FT_SECONDS",tis);
+                startActivity(DFT);
             }
         });
     }
@@ -193,6 +233,13 @@ public class MainActivity extends AppCompatActivity {
         switch(id){
             case R.id.contact_us_sendemail:
                 sendEmail();
+                break;
+            case R.id.about_app:
+                displayAboutApp();
+                break;
+            case R.id.open_on_gp:
+                openOnGooglePlay();
+                break;
         }
         return true;
     }
