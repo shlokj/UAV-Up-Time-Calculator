@@ -23,9 +23,7 @@ import android.content.Intent;
 public class MainActivity extends AppCompatActivity {
 
     public void composeEmail(String message) {
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        //intent.setType("*/*");
-        intent.setType("text/HTML");
+        Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","shlokj@gmail.com", null));
         intent.putExtra(android.content.Intent.EXTRA_EMAIL,new String[] { "shlokj@gmail.com" });
         intent.putExtra(Intent.EXTRA_SUBJECT, "Drone Flight Time Calculator");
         intent.putExtra(Intent.EXTRA_TEXT, message);
@@ -34,12 +32,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void sendEmail () {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Send a message: ");
         final EditText input = new EditText(this);
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
         FrameLayout container = new FrameLayout(getApplicationContext());
         FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.leftMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);

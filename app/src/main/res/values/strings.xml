@@ -3,7 +3,7 @@
     <string name="dialog_title">Calculated Flight Time</string>
     <string name="by_shlok_jhawar">By Shlok Jhawar</string>
     <string name="about_app">This app intends to help drone pilots compute/predict their UAV\'s flight time beforehand, providing a better insight into prospective builds.\n\nBuilt by Shlok Jhawar</string>
-    <string name="mapm">Max amps per motor</string>
+    <string name="mapm">Max amps per motor (A)</string>
     <string name="mtpm">Max thrust per motor (g)</string>
     <string name="weight_of_drone">Weight of drone (g)</string>
     <string name="battery_capacity">Battery Capacity (mAh)</string>
