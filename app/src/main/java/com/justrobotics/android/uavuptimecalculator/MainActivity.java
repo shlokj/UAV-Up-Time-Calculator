@@ -22,6 +22,8 @@ import android.content.Intent;
 
 public class MainActivity extends AppCompatActivity {
 
+    String canFly;
+
     public void composeEmail(String message) {
         Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto","shlokj@gmail.com", null));
         intent.putExtra(android.content.Intent.EXTRA_EMAIL,new String[] { "shlokj@gmail.com" });
@@ -79,13 +81,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void displayAboutApp () {
-        new AlertDialog.Builder(MainActivity.this)
-                .setTitle("About Drone Flight Time Calculator")
-                .setMessage("This will redirect you to send an email")
-                .setMessage(R.string.about_app)
-                .setIcon(R.drawable.dftc_drawable_icon)
-                .setPositiveButton("OK",null)
-                .show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("About Drone Flight Time Calculator");
+        builder.setMessage("This will redirect you to send an email");
+        builder.setMessage(R.string.about_app);
+        builder.setIcon(R.drawable.dftc_drawable_icon);
+        builder.setPositiveButton("OK",null);
+        builder.setNeutralButton("Contact", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                sendEmail();
+            }
+        });
+        builder.show();
     }
 
     public void openOnGooglePlay(){
@@ -204,6 +212,10 @@ public class MainActivity extends AppCompatActivity {
                 float required_throttle = (Float.parseFloat(stringD.isEmpty()||stringD.equals("0")?"1":stringD)/1000) / kgthrust;//Simplified
                 if (required_throttle>1){
                     required_throttle=1;
+                    canFly="no";
+                }
+                else {
+                    canFly="yes";
                 }
                 float avg_ampdraw=required_throttle*total_max_ampdraw;
                 float battery_capacity_ah=battery_capacity_mah/1000;
@@ -214,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
 //                displayFlightTime(tis);
                 Intent DFT = new Intent(MainActivity.this, DisplayActivity.class);
                 DFT.putExtra("FT_SECONDS",tis);
+                DFT.putExtra("CAN_FLY",canFly);
                 startActivity(DFT);
             }
         });
@@ -228,9 +241,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch(id){
-            case R.id.contact_us_sendemail:
-                sendEmail();
-                break;
             case R.id.about_app:
                 displayAboutApp();
                 break;

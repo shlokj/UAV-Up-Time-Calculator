@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DisplayActivity extends AppCompatActivity {
 
     int timeInSeconds, minutesPart, secondsPart;
+//    String canFly;
     TextView minutes_part, seconds_part;
 
     @Override
@@ -25,6 +27,10 @@ public class DisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         timeInSeconds = getIntent().getIntExtra("FT_SECONDS",0);
+//        canFly = getIntent().getStringExtra("CAN_FLY");
+        if (getIntent().getStringExtra("CAN_FLY").equals("no")) {
+            Toast.makeText(getApplicationContext(), R.string.inadequate_thrust_message, Toast.LENGTH_LONG).show();
+        }
         secondsPart = timeInSeconds%60;
         minutesPart = (timeInSeconds-secondsPart)/60;
         minutes_part = (TextView) findViewById(R.id.minutes);
@@ -47,9 +53,6 @@ public class DisplayActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch(id){
-            case R.id.contact_us_sendemail:
-                sendEmail();
-                break;
             case R.id.about_app:
                 displayAboutApp();
                 break;
